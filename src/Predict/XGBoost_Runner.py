@@ -10,10 +10,19 @@ from src.Utils import Expected_Value
 # from src.Utils.Dictionaries import team_index_current
 # from src.Utils.tools import get_json_data, to_data_frame, get_todays_games_json, create_todays_games
 init()
+t1 = ""
+t2 = ""
+with open("models.txt") as fp:
+    for i, line in enumerate(fp):
+        if i == 1:
+            t1 = line.strip()
+        if i == 3:
+            t2 = line.strip()
+
 xgb_ml = xgb.Booster()
-xgb_ml.load_model('Models/XGBoost_Models/XGBoost_68.6%_ML-2.json')
+xgb_ml.load_model(t1)
 xgb_uo = xgb.Booster()
-xgb_uo.load_model('Models/XGBoost_Models/XGBoost_54.8%_UO-8.json')
+xgb_uo.load_model(t2)
 
 
 def xgb_runner(data, todays_games_uo, frame_ml, games, home_team_odds, away_team_odds):

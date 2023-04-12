@@ -46,3 +46,4 @@ for x in tqdm(range(100)):
     # only save results if they are the best so far
     if acc == max(acc_results):
         model.save_model('../../Models/XGBoost_{}%_ML-2.json'.format(acc))
+        name = 'Models/XGBoost_{}%_ML-2.json'.format(acc)
