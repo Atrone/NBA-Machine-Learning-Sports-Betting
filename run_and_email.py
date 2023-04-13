@@ -9,7 +9,7 @@ from email import encoders
 from email.mime.text import MIMEText
 
 # For cmd.exe (Command Prompt)
-subprocess.run(["cmd.exe", "/c", "job.bat"], check=True)
+subprocess.run(["cmd.exe", "/c", r"C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting\job.bat"], check=True)
 
 # Email settings
 from_email = "blockbits30@gmail.com"
@@ -19,7 +19,7 @@ body = "Please find the attached output.txt file."
 smtp_server = "smtp.gmail.com"
 smtp_port = 587  # or 465, depending on your server
 smtp_user = "blockbits30@gmail.com"
-smtp_password = os.environ.get("emailpwd")
+smtp_password = ''
 
 # Compose email
 msg = MIMEMultipart()

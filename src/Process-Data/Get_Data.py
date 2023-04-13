@@ -35,7 +35,7 @@ begin_year_pointer = year[0]
 end_year_pointer = year[0]
 count = 0
 
-con = sqlite3.connect("../../Data/teams.sqlite")
+con = sqlite3.connect(r"C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting\Data\teams.sqlite")
 
 for season1 in tqdm(season):
     for month1 in tqdm(month):

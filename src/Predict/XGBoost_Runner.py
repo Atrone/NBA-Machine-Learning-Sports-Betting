@@ -12,7 +12,7 @@ from src.Utils import Expected_Value
 init()
 t1 = ""
 t2 = ""
-with open("models.txt") as fp:
+with open(rf'C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting\models.txt') as fp:
     for i, line in enumerate(fp):
         if i == 1:
             t1 = line.strip()

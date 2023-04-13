@@ -8,7 +8,7 @@ import numpy as np
 
 
 dataset = "dataset_2012-23"
-con = sqlite3.connect("../../Data/dataset.sqlite")
+con = sqlite3.connect(r"C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting\Data\dataset.sqlite")
 data = pd.read_sql_query(f"select * from \"{dataset}\"", con, index_col="index")
 con.close()
 OU = data['OU-Cover']
@@ -48,5 +48,5 @@ for x in tqdm(range(100)):
     acc_results.append(acc)
     # only save results if they are the best so far
     if acc == max(acc_results):
-        model.save_model('../../Models/XGBoost_{}%_UO-8.json'.format(acc))
-        name = 'Models/XGBoost_{}%_UO-8.json'.format(acc)
+        model.save_model(r'C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting\Models\XGBoost_{}%_UO-8.json'.format(acc))
+        name = r'C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting\Models\XGBoost_{}%_UO-8.json'.format(acc)
