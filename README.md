@@ -3,6 +3,8 @@ A fork of a popular NBA machine learning project that adds depth to each module.
 
 Complete with PowerShell scheduled jobs and the results sensitivity analyzed in a front-end, this fork aims to make it very easy to bet intelligently.
 
+# See here: https://nba-predict-frontend.herokuapp.com
+
 4 commands to get started:
 
 BASH: ```grep -rl C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting ./ | xargs sed -i 's/C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting/YOUR_PARENT_DIRECTORY/g'```
