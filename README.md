@@ -9,7 +9,7 @@ BASH: ```grep -rl C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-L
 
 BASH: ```grep -rl blockbits30@gmail.com ./ | xargs sed -i 's/blockbits30@gmail.com/YOUR_GMAIL/g'```
 
-BASH: ```grep -rl SMTP_APP_PASSWORD ./ | xargs sed -i 's/SMTP_APP_PASSWORD/YOUR_GMAIL_APP_PASSWORD/g'```
+BASH: ```grep -rl SMTP_PASSWORD ./ | xargs sed -i 's/SMTP_APP_PASSWORD/YOUR_GMAIL_APP_PASSWORD/g'```
 
 BASH: ```grep -rl draftkings ./main.py | xargs sed -i 's/draftkings/YOUR_FAVORITE_BETTING_APP/g'```
 
