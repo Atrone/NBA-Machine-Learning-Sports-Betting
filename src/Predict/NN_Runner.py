@@ -18,8 +18,8 @@ with open(rf'C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learni
             t1 = line.strip()
         if i == 2:
             t2 = line.strip()
-model = load_model(f"Models/Trained-Model-ML-{t1}")
-ou_model = load_model(f"Models/Trained-Model-OU-{t2}")
+model = load_model(rf"C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting\Models\Trained-Model-ML-{t1}")
+ou_model = load_model(rf"C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting\Models\Trained-Model-OU-{t2}")
 
 
 def nn_runner(data, todays_games_uo, frame_ml, games, home_team_odds, away_team_odds):

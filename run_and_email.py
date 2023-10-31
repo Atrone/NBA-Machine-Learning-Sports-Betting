@@ -13,13 +13,13 @@ subprocess.run(["cmd.exe", "/c", r"C:\Users\antho\PycharmProjects\nba_fantasy_tr
 
 # Email settings
 from_email = "blockbits30@gmail.com"
-to_email = "anthony.teixeira55@gmail.com"
-subject = "Python script output"
+to_email = "blockbits30@gmail.com"
+subject = "Python script output - BETTING"
 body = "Please find the attached output.txt file."
 smtp_server = "smtp.gmail.com"
 smtp_port = 587  # or 465, depending on your server
 smtp_user = "blockbits30@gmail.com"
-smtp_password = ''
+smtp_password = 'SMTP_PASSWORD'
 
 # Compose email
 msg = MIMEMultipart()
@@ -29,7 +29,7 @@ msg["Subject"] = subject
 msg.attach(MIMEText(body, "plain"))
 
 # Attach the output file
-filename = "output.txt"
+filename = r"C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting\output.txt"
 attachment = open(filename, "rb")
 part = MIMEBase("application", "octet-stream")
 part.set_payload(attachment.read())

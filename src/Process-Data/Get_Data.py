@@ -9,6 +9,7 @@ from tqdm import tqdm
 
 sys.path.insert(1, os.path.join(sys.path[0], '..'))
 from Utils.tools import get_json_data, to_data_frame
+from src.Utils.Dictionaries import team_index_current
 
 url = 'https://stats.nba.com/stats/' \
       'leaguedashteamstats?Conference=&' \
@@ -19,12 +20,12 @@ url = 'https://stats.nba.com/stats/' \
       'PerMode=PerGame&Period=0&PlayerExperience=&' \
       'PlayerPosition=&PlusMinus=N&Rank=N&' \
       'Season={4}' \
-      '&SeasonSegment=&SeasonType=Regular+Season&ShotClockRange=&' \
+      '&SeasonSegment=&SeasonType={5}&ShotClockRange=&' \
       'StarterBench=&TeamID=0&TwoWay=0&VsConference=&VsDivision='
 
 # year = [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022]
-year = [2022, 2023]
-season = ["2022-23"]
+year = [2023, 2024]
+season = ["2023-24"]
 # season = ["2007-08", "2008-09", "2009-10", "2010-11", "2011-12", "2012-13", "2013-14", "2014-15", "2015-16", "2016-17",
 #           "2017-18", "2018-19", "2019-20", "2020-2021", "2021-2022"]
 
@@ -43,7 +44,7 @@ for season1 in tqdm(season):
             count += 1
             end_year_pointer = year[count]
         for day1 in tqdm(days):
-            if month1 == 10 and day1 < 19:
+            if month1 == 10 and day1 < 19: # preseason start
                 continue
             if month1 in [4,6,9,11] and day1 > 30:
                 continue
@@ -54,7 +55,8 @@ for season1 in tqdm(season):
                     continue
                 if month1 > datetime.now().month:
                     continue
-            general_data = get_json_data(url.format(month1, day1, begin_year_pointer, end_year_pointer, season1))
+            general_data = get_json_data(url.format(month1, day1, begin_year_pointer, end_year_pointer, season1,
+                                                        "Regular+Season"))
             general_df = to_data_frame(general_data)
             real_date = date(year=end_year_pointer, month=month1, day=day1) + timedelta(days=1)
             general_df['Date'] = str(real_date)

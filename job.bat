@@ -5,4 +5,4 @@ python C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Spo
 
 python C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting\src\Train-Models\setup.py
 
-python C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting\main.py -A -odds=fanduel > output.txt
+python C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting\main.py > C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting\output.txt

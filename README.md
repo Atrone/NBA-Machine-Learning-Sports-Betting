@@ -1,60 +1,19 @@
-# NBA Sports Betting Using Machine Learning 🏀
-<img src="https://github.com/kyleskom/NBA-Machine-Learning-Sports-Betting/blob/master/Screenshots/output.png" width="1010" height="292" />
+# Slam-Dunk-Streamline 🏀
+A fork of a popular NBA machine learning project that adds depth to each module.
 
-A machine learning AI used to predict the winners and under/overs of NBA games. Takes all team data from the 2007-08 season to current season, matched with odds of those games, using a neural network to predict winning bets for today's games. Achieves ~75% accuracy on money lines and ~58% on under/overs. Outputs expected value for teams money lines to provide better insight. 
-## Packages Used
+Complete with PowerShell scheduled jobs and the results sensitivity analyzed in a front-end, this fork aims to make it very easy to bet intelligently.
 
-Use Python 3.8. In particular the packages/libraries used are...
+4 commands to get started:
 
-* Tensorflow - Machine learning library
-* XGBoost - Gradient boosting framework
-* Numpy - Package for scientific computing in Python
-* Pandas - Data manipulation and analysis
-* Colorama - Color text output
-* Tqdm - Progress bars
-* Requests - Http library
-* Scikit_learn - Machine learning library
+BASH: ```grep -rl C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting ./ | xargs sed -i 's/C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting/YOUR_PARENT_DIRECTORY/g'```
 
-## Usage
+BASH: ```grep -rl blockbits30@gmail.com ./ | xargs sed -i 's/blockbits30@gmail.com/YOUR_GMAIL/g'```
 
-<img src="https://github.com/kyleskom/NBA-Machine-Learning-Sports-Betting/blob/master/Screenshots/Expected_value.png" width="1010" height="424" />
+BASH: ```grep -rl SMTP_APP_PASSWORD ./ | xargs sed -i 's/SMTP_APP_PASSWORD/YOUR_GMAIL_APP_PASSWORD/g'```
 
-Make sure all packages above are installed.
+BASH: ```grep -rl draftkings ./main.py | xargs sed -i 's/draftkings/YOUR_FAVORITE_BETTING_APP/g'```
 
-```bash
-$ git clone https://github.com/kyleskom/NBA-Machine-Learning-Sports-Betting.git
-$ cd NBA-Machine-Learning-Sports-Betting
-$ pip3 install -r requirements.txt
-$ python3 main.py -xgb -odds=fanduel
-```
 
-Odds data will be automatically fetched from sbrodds if the -odds option is provided with a sportsbook.  Options include: fanduel, draftkings, betmgm, pointsbet, caesars, wynn, bet_rivers_ny
+After changing things with your data, you can start a scheduled job (cron, task scheduler, etc) that simply runs ```run_and_email.py``` and everything else is handled because of absolute paths.
 
-If `-odds` is not given, enter the under/over and odds for today's games manually after starting the script.
-
-## Flask Web App
-<img src="https://github.com/kyleskom/NBA-Machine-Learning-Sports-Betting/blob/master/Screenshots/Flask-App.png" width="922" height="580" />
-
-This repo also includes a small Flask application to help view the data from this tool in the browser.  To run it:
-```
-cd Flask
-flask --debug run
-```
-
-## Getting new data and training models
-```
-# Create dataset with the latest data for 2022-23 season
-cd src/Process-Data
-python -m Get_Data
-python -m Get_Odds_Data
-python -m Create_Games
-
-# Train models
-cd ../Train-Models
-python -m XGBoost_Model_ML
-python -m XGBoost_Model_UO
-```
-
-## Contributing
-
-All contributions welcomed and encouraged.
+Or you can just run the file manually and wait for the email, that works too.

@@ -11,7 +11,7 @@ tensorboard = TensorBoard(log_dir=r'C:\Users\antho\PycharmProjects\nba_fantasy_t
 earlyStopping = EarlyStopping(monitor='val_loss', patience=10, verbose=0, mode='min')
 mcp_save = ModelCheckpoint(r'C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting\Models\Trained-Model-ML-' + current_time, save_best_only=True, monitor='val_loss', mode='min')
 
-dataset = "dataset_2012-23"
+dataset = "dataset_2012-24"
 con = sqlite3.connect(r"C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting\Data\dataset.sqlite")
 data = pd.read_sql_query(f"select * from \"{dataset}\"", con, index_col="index")
 con.close()

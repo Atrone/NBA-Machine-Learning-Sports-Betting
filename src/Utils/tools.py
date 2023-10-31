@@ -2,7 +2,7 @@ from datetime import datetime
 import re
 import requests
 import pandas as pd
-from .Dictionaries import team_index_current
+from src.Utils.Dictionaries import team_index_current
 
 games_header = {
     'user-agent': 'Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) '
@@ -34,7 +34,6 @@ def get_json_data(url):
         print(e)
         return {}
     return json.get('resultSets')
-
 
 def get_todays_games_json(url):
     raw_data = requests.get(url, headers=games_header)
