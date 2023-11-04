@@ -7,17 +7,19 @@ import pandas as pd
 import tensorflow as tf
 from src.Predict import NN_Runner, XGBoost_Runner
 from src.Utils.Dictionaries import team_index_current
-from src.Utils.tools import create_todays_games_from_odds, get_json_data, to_data_frame, get_todays_games_json, create_todays_games
+from src.Utils.tools import create_todays_games_from_odds, get_json_data, to_data_frame, get_todays_games_json, \
+    create_todays_games
 from src.DataProviders.SbrOddsProvider import SbrOddsProvider
 
-if date.today().month in range(8,13):
-    season = f"{date.today().year}-{str((date.today().year)+1)[:-2]}"
+if date.today().month in range(8, 13):
+    season = f"{date.today().year}-{str((date.today().year) + 1)[:-2]}"
     todays_games_url = f'https://data.nba.com/data/10s/v2015/json/mobile_teams/nba/{date.today().year}/scores/00_todays_scores.json'
 
 else:
-    season = f"{date.today().year-1}-{str((date.today().year))[:-2]}"
-    todays_games_url = f'https://data.nba.com/data/10s/v2015/json/mobile_teams/nba/{date.today().year-1}/scores/00_todays_scores.json'
+    season = f"{date.today().year - 1}-{str((date.today().year))[:-2]}"
+    todays_games_url = f'https://data.nba.com/data/10s/v2015/json/mobile_teams/nba/{date.today().year - 1}/scores/00_todays_scores.json'
 
+csv_reference = 'nba-2023-UTC.csv'  # UPDATE ME
 
 data_url = 'https://stats.nba.com/stats/leaguedashteamstats?' \
            'Conference=&DateFrom=&DateTo=&Division=&GameScope=&' \
@@ -48,7 +50,7 @@ def createTodaysGames(games, df, odds):
         if odds is not None:
             game_odds = odds[home_team + ':' + away_team]
             todays_games_uo.append(game_odds['under_over_odds'])
-            
+
             home_team_odds.append(game_odds[home_team]['money_line_odds'])
             away_team_odds.append(game_odds[away_team]['money_line_odds'])
 
@@ -57,14 +59,17 @@ def createTodaysGames(games, df, odds):
 
             home_team_odds.append(input(home_team + ' odds: '))
             away_team_odds.append(input(away_team + ' odds: '))
-        
+
         # calculate days rest for both teams
         dateparse = lambda x: datetime.strptime(x, '%d/%m/%Y %H:%M')
-        schedule_df = pd.read_csv(rf'{parent_dir}\NBA-Machine-Learning-Sports-Betting\Data\nba-2023-UTC.csv', parse_dates=['Date'], date_parser=dateparse)
+        schedule_df = pd.read_csv(rf'{parent_dir}\NBA-Machine-Learning-Sports-Betting\Data\{csv_reference}',
+                                  parse_dates=['Date'], date_parser=dateparse)
         home_games = schedule_df[(schedule_df['Home Team'] == home_team) | (schedule_df['Away Team'] == home_team)]
         away_games = schedule_df[(schedule_df['Home Team'] == away_team) | (schedule_df['Away Team'] == away_team)]
-        previous_home_games = home_games.loc[schedule_df['Date'] <= datetime.today()].sort_values('Date',ascending=False).head(1)['Date']
-        previous_away_games = away_games.loc[schedule_df['Date'] <= datetime.today()].sort_values('Date',ascending=False).head(1)['Date']
+        previous_home_games = \
+        home_games.loc[schedule_df['Date'] <= datetime.today()].sort_values('Date', ascending=False).head(1)['Date']
+        previous_away_games = \
+        away_games.loc[schedule_df['Date'] <= datetime.today()].sort_values('Date', ascending=False).head(1)['Date']
         if len(previous_home_games) > 0:
             last_home_date = previous_home_games.iloc[0]
             home_days_off = timedelta(days=1) + datetime.today() - last_home_date
@@ -105,15 +110,17 @@ def main():
             print("No games found.")
             return
         if (games[0][0] + ':' + games[0][1]) not in list(odds.keys()):
-            print(games[0][0]+':'+games[0][1])
-            print(Fore.RED, "--------------Games list not up to date for todays games!!! Scraping disabled until list is updated.--------------")
+            print(games[0][0] + ':' + games[0][1])
+            print(Fore.RED,
+                  "--------------Games list not up to date for todays games!!! Scraping disabled until list is updated.--------------")
             print(Style.RESET_ALL)
             odds = None
         else:
             print(f"------------------draftkings odds data------------------")
             for g in odds.keys():
                 home_team, away_team = g.split(":")
-                print(f"{away_team} ({odds[g][away_team]['money_line_odds']}) @ {home_team} ({odds[g][home_team]['money_line_odds']})")
+                print(
+                    f"{away_team} ({odds[g][away_team]['money_line_odds']}) @ {home_team} ({odds[g][home_team]['money_line_odds']})")
     data = get_json_data(data_url)
     df = to_data_frame(data)
     data, todays_games_uo, frame_ml, home_team_odds, away_team_odds = createTodaysGames(games, df, odds)
@@ -141,6 +148,7 @@ if __name__ == "__main__":
     parser.add_argument('-xgb', action='store_true', help='Run with XGBoost Model')
     parser.add_argument('-nn', action='store_true', help='Run with Neural Network Model')
     parser.add_argument('-A', action='store_true', help='Run all Models')
-    parser.add_argument('-odds', help='Sportsbook to fetch from. (fanduel, draftkings, betmgm, pointsbet, caesars, wynn, bet_rivers_ny')
+    parser.add_argument('-odds',
+                        help='Sportsbook to fetch from. (fanduel, draftkings, betmgm, pointsbet, caesars, wynn, bet_rivers_ny')
     args = parser.parse_args()
     main()

@@ -57,7 +57,7 @@ msg["Subject"] = subject
 msg.attach(MIMEText(body, "plain"))
 
 # Attach the output file
-filename = r"C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting\output.txt"
+filename = rf"{parent_dir}\NBA-Machine-Learning-Sports-Betting\output.txt"
 attachment = open(filename, "rb")
 part = MIMEBase("application", "octet-stream")
 part.set_payload(attachment.read())
