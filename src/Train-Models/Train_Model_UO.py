@@ -1,3 +1,4 @@
+import os
 import sqlite3
 import time
 import numpy as np
@@ -7,12 +8,16 @@ from tensorflow.keras.callbacks import TensorBoard, EarlyStopping, ModelCheckpoi
 
 current_time = str(time.time())
 
-tensorboard = TensorBoard(log_dir=r'C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting\Logs\{}'.format(current_time))
-earlyStopping = EarlyStopping(monitor='val_loss', patience=10, verbose=0, mode='min')
-mcp_save = ModelCheckpoint(r'C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting\Models\Trained-Model-OU-' + current_time, save_best_only=True, monitor='val_loss', mode='min')
+current_dir = os.getcwd()  # Get current directory
+parent_dir = os.path.dirname(current_dir)  # Get parent directory
 
-dataset = "dataset_2012-23"
-con = sqlite3.connect(r"C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting\Data\dataset.sqlite")
+
+tensorboard = TensorBoard(log_dir=rf'{parent_dir}'+r'\NBA-Machine-Learning-Sports-Betting\Logs\{}'.format(current_time))
+earlyStopping = EarlyStopping(monitor='val_loss', patience=10, verbose=0, mode='min')
+mcp_save = ModelCheckpoint(rf'{parent_dir}\NBA-Machine-Learning-Sports-Betting\Models\Trained-Model-OU-' + current_time, save_best_only=True, monitor='val_loss', mode='min')
+
+dataset = "dataset_2012-24"
+con = sqlite3.connect(rf"{parent_dir}\NBA-Machine-Learning-Sports-Betting\Data\dataset.sqlite")
 data = pd.read_sql_query(f"select * from \"{dataset}\"", con, index_col="index")
 con.close()
 

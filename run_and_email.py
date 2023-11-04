@@ -1,4 +1,5 @@
 import os
+import re
 import subprocess
 import smtplib
 from email.mime.multipart import MIMEMultipart
@@ -8,18 +9,45 @@ from email import encoders
 # Run the shell script
 from email.mime.text import MIMEText
 
-# For cmd.exe (Command Prompt)
-subprocess.run(["cmd.exe", "/c", r"C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting\job.bat"], check=True)
+import subprocess
+import os
+
+current_dir = os.getcwd()  # Get current directory
+parent_dir = os.path.dirname(current_dir)  # Get parent directory
+
+# Define the paths
+bat_path = rf"{parent_dir}\NBA-Machine-Learning-Sports-Betting\job.bat"
+output_path = rf"{parent_dir}\NBA-Machine-Learning-Sports-Betting\output.txt"
+
+# Run your batch file
+result = subprocess.run(
+    ["cmd.exe", "/c", bat_path])
+
+
+# Regular expression to match ANSI escape codes
+ansi_escape = re.compile(r'(?:\x1B[@-_]|[\x80-\x9F])[0-?]*[ -/]*[@-~]')
+
+# Read the file content
+with open(output_path, "r", encoding="utf-8") as file:
+    file_content = file.read()
+
+# Clean the file content using the regex
+cleaned_content = ansi_escape.sub('', file_content)
+
+# Write the cleaned content back to the file
+with open(output_path, "w", encoding="utf-16") as file:
+    file.write(cleaned_content)
+
 
 # Email settings
-from_email = "blockbits30@gmail.com"
-to_email = "blockbits30@gmail.com"
+from_email = "@gmail.com"
+to_email = "@gmail.com"
 subject = "Python script output - BETTING"
 body = "Please find the attached output.txt file."
 smtp_server = "smtp.gmail.com"
 smtp_port = 587  # or 465, depending on your server
-smtp_user = "blockbits30@gmail.com"
-smtp_password = 'SMTP_PASSWORD'
+smtp_user = "@gmail.com"
+smtp_password = ''
 
 # Compose email
 msg = MIMEMultipart()

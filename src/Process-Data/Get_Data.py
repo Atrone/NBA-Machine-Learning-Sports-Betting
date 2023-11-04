@@ -9,7 +9,6 @@ from tqdm import tqdm
 
 sys.path.insert(1, os.path.join(sys.path[0], '..'))
 from Utils.tools import get_json_data, to_data_frame
-from src.Utils.Dictionaries import team_index_current
 
 url = 'https://stats.nba.com/stats/' \
       'leaguedashteamstats?Conference=&' \
@@ -36,7 +35,10 @@ begin_year_pointer = year[0]
 end_year_pointer = year[0]
 count = 0
 
-con = sqlite3.connect(r"C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting\Data\teams.sqlite")
+current_dir = os.getcwd()  # Get current directory
+parent_dir = os.path.dirname(current_dir)  # Get parent directory
+
+con = sqlite3.connect(rf"{parent_dir}\NBA-Machine-Learning-Sports-Betting\Data\teams.sqlite")
 
 for season1 in tqdm(season):
     for month1 in tqdm(month):

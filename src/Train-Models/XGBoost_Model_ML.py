@@ -1,3 +1,4 @@
+import os
 import sqlite3
 import pandas as pd
 import xgboost as xgb
@@ -7,7 +8,10 @@ from tqdm import tqdm
 import numpy as np
 
 dataset = "dataset_2012-24"
-con = sqlite3.connect(r"C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting\Data\dataset.sqlite")
+current_dir = os.getcwd()  # Get current directory
+parent_dir = os.path.dirname(current_dir)  # Get parent directory
+
+con = sqlite3.connect(rf"{parent_dir}\NBA-Machine-Learning-Sports-Betting\Data\dataset.sqlite")
 data = pd.read_sql_query(f"select * from \"{dataset}\"", con, index_col="index")
 con.close()
 
@@ -45,5 +49,5 @@ for x in tqdm(range(100)):
     acc_results.append(acc)
     # only save results if they are the best so far
     if acc == max(acc_results):
-        model.save_model(r'C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting\Models\XGBoost_{}%_ML-2.json'.format(acc))
-        name = r'C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting\Models\XGBoost_{}%_ML-2.json'.format(acc)
+        model.save_model(rf'C:\Users\antho\PycharmProjects\nba_fantasy_trone'+r'\NBA-Machine-Learning-Sports-Betting\Models\XGBoost_{}%_ML-2.json'.format(acc))
+        name = rf'C:\Users\antho\PycharmProjects\nba_fantasy_trone'+r'\NBA-Machine-Learning-Sports-Betting\Models\XGBoost_{}%_ML-2.json'.format(acc)

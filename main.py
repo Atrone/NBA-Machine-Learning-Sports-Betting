@@ -1,4 +1,5 @@
 import argparse
+import os
 from datetime import datetime, timedelta
 import time
 from colorama import Fore, Style
@@ -17,8 +18,10 @@ data_url = 'https://stats.nba.com/stats/leaguedashteamstats?' \
            'MeasureType=Base&Month=0&OpponentTeamID=0&Outcome=&' \
            'PORound=0&PaceAdjust=N&PerMode=PerGame&Period=0&' \
            'PlayerExperience=&PlayerPosition=&PlusMinus=N&Rank=N&' \
-           'Season=2022-23&SeasonSegment=&SeasonType=Regular+Season&ShotClockRange=&' \
+           'Season=2023-24&SeasonSegment=&SeasonType=Regular+Season&ShotClockRange=&' \
            'StarterBench=&TeamID=0&TwoWay=0&VsConference=&VsDivision='
+current_dir = os.getcwd()  # Get current directory
+parent_dir = os.path.dirname(current_dir)  # Get parent directory
 
 
 def createTodaysGames(games, df, odds):
@@ -50,7 +53,7 @@ def createTodaysGames(games, df, odds):
         
         # calculate days rest for both teams
         dateparse = lambda x: datetime.strptime(x, '%d/%m/%Y %H:%M')
-        schedule_df = pd.read_csv(r'C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting\Data\nba-2023-UTC.csv', parse_dates=['Date'], date_parser=dateparse)
+        schedule_df = pd.read_csv(rf'{parent_dir}\NBA-Machine-Learning-Sports-Betting\Data\nba-2023-UTC.csv', parse_dates=['Date'], date_parser=dateparse)
         home_games = schedule_df[(schedule_df['Home Team'] == home_team) | (schedule_df['Away Team'] == home_team)]
         away_games = schedule_df[(schedule_df['Home Team'] == away_team) | (schedule_df['Away Team'] == away_team)]
         previous_home_games = home_games.loc[schedule_df['Date'] <= datetime.today()].sort_values('Date',ascending=False).head(1)['Date']

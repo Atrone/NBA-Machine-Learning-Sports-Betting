@@ -2,7 +2,14 @@ from datetime import datetime
 import re
 import requests
 import pandas as pd
-from src.Utils.Dictionaries import team_index_current
+import sys
+from pathlib import Path
+
+# Add the Utils directory to the sys.path
+utils_dir = str(Path(__file__).parent.parent / 'Utils')
+sys.path.insert(0, utils_dir)
+
+from Dictionaries import team_index_current
 
 games_header = {
     'user-agent': 'Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) '
@@ -25,7 +32,6 @@ data_headers = {
 }
 
 
-
 def get_json_data(url):
     raw_data = requests.get(url, headers=data_headers)
     try:
@@ -34,6 +40,7 @@ def get_json_data(url):
         print(e)
         return {}
     return json.get('resultSets')
+
 
 def get_todays_games_json(url):
     raw_data = requests.get(url, headers=games_header)
@@ -70,7 +77,8 @@ def create_todays_games_from_odds(input_dict):
         games.append([home_team, away_team])
     return games
 
+
 def get_date(date_string):
-    year1,month,day = re.search(r'(\d+)-\d+-(\d\d)(\d\d)', date_string).groups()
+    year1, month, day = re.search(r'(\d+)-\d+-(\d\d)(\d\d)', date_string).groups()
     year = year1 if int(month) > 8 else int(year1) + 1
     return datetime.strptime(f"{year}-{month}-{day}", '%Y-%m-%d')

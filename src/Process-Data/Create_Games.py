@@ -118,6 +118,10 @@ for field in frame.columns.values:
     if 'TEAM_' in field  or 'Date' in field or field not in frame:
         continue
     frame[field] = frame[field].astype(float)
-con = sqlite3.connect(r"C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting\Data\dataset.sqlite")
+
+current_dir = os.getcwd()  # Get current directory
+parent_dir = os.path.dirname(current_dir)  # Get parent directory
+
+con = sqlite3.connect(rf"{parent_dir}\NBA-Machine-Learning-Sports-Betting\Data\dataset.sqlite")
 frame.to_sql("dataset_2012-24", con, if_exists="replace")
 con.close()

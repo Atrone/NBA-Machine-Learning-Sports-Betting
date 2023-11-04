@@ -24,7 +24,10 @@ count = 0
 sportsbook='draftkings'
 df_data = []
 
-con = sqlite3.connect(r"C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting\Data\odds.sqlite")
+current_dir = os.getcwd()  # Get current directory
+parent_dir = os.path.dirname(current_dir)  # Get parent directory
+
+con = sqlite3.connect(rf"{parent_dir}\NBA-Machine-Learning-Sports-Betting\Data\odds.sqlite")
 
 for season1 in tqdm(season):
     teams_last_played = {}
