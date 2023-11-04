@@ -1,6 +1,8 @@
 # Slam-Dunk-Streamline 🏀
 A fork of a popular NBA machine learning project that adds depth to each module.
 
+Automagically knows today's season and adapts accordingly.
+
 Complete with PowerShell scheduled jobs and the results sensitivity analyzed in a front-end, this fork aims to make it very easy to bet intelligently.
 
 # See here: https://nba-predict-frontend.herokuapp.com

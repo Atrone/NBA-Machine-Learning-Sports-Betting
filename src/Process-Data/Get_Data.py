@@ -9,6 +9,8 @@ from tqdm import tqdm
 
 sys.path.insert(1, os.path.join(sys.path[0], '..'))
 from Utils.tools import get_json_data, to_data_frame
+from Utils.Variables import dataset, year, season, parent_dir
+parent_dir = '\\'.join(str(parent_dir).split('\\')[:-2])
 
 url = 'https://stats.nba.com/stats/' \
       'leaguedashteamstats?Conference=&' \
@@ -23,8 +25,6 @@ url = 'https://stats.nba.com/stats/' \
       'StarterBench=&TeamID=0&TwoWay=0&VsConference=&VsDivision='
 
 # year = [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022]
-year = [2023, 2024]
-season = ["2023-24"]
 # season = ["2007-08", "2008-09", "2009-10", "2010-11", "2011-12", "2012-13", "2013-14", "2014-15", "2015-16", "2016-17",
 #           "2017-18", "2018-19", "2019-20", "2020-2021", "2021-2022"]
 
@@ -35,8 +35,6 @@ begin_year_pointer = year[0]
 end_year_pointer = year[0]
 count = 0
 
-current_dir = os.getcwd()  # Get current directory
-parent_dir = os.path.dirname(current_dir)  # Get parent directory
 
 con = sqlite3.connect(rf"{parent_dir}\NBA-Machine-Learning-Sports-Betting\Data\teams.sqlite")
 

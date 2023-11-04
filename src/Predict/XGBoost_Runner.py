@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import xgboost as xgb
 from colorama import Fore, Style, init, deinit
-from src.Utils import Expected_Value
+from src.Utils import Expected_Value, Variables
 
 
 # from src.Utils.Dictionaries import team_index_current
@@ -12,7 +12,7 @@ from src.Utils import Expected_Value
 init()
 t1 = ""
 t2 = ""
-with open(rf'C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting\models.txt') as fp:
+with open(rf'{Variables.parent_dir}\NBA-Machine-Learning-Sports-Betting\models.txt') as fp:
     for i, line in enumerate(fp):
         if i == 1:
             t1 = line.strip()

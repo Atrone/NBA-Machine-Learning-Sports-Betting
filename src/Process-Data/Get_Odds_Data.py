@@ -5,15 +5,13 @@ import sqlite3
 import os
 import sys
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from tqdm import tqdm
 from sbrscrape import Scoreboard
 sys.path.insert(1, os.path.join(sys.path[0], '..'))
 from Utils.tools import get_date
-
-year = [2023, 2024]
-season = ["2023-24"]
-
+from Utils.Variables import year, season, parent_dir
+parent_dir = '\\'.join(str(parent_dir).split('\\')[:-2])
 month = [10, 11, 12, 1, 2, 3, 4, 5, 6]
 days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
 
@@ -24,8 +22,6 @@ count = 0
 sportsbook='draftkings'
 df_data = []
 
-current_dir = os.getcwd()  # Get current directory
-parent_dir = os.path.dirname(current_dir)  # Get parent directory
 
 con = sqlite3.connect(rf"{parent_dir}\NBA-Machine-Learning-Sports-Betting\Data\odds.sqlite")
 

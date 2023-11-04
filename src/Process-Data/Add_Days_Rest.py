@@ -1,17 +1,24 @@
+import os
 import re
 import sqlite3
+import sys
+
 import pandas as pd
 from tqdm import tqdm
-from datetime import datetime, timedelta
+from datetime import datetime
+sys.path.insert(1, os.path.join(sys.path[0], '..'))
+from Utils.Variables import datasets, parent_dir
+parent_dir = '\\'.join(str(parent_dir).split('\\')[:-2])
 
 
 def get_date(date_string):
-    year1,month,day = re.search(r'(\d+)-\d+-(\d\d)(\d\d)', date_string).groups()
+    year1, month, day = re.search(r'(\d+)-\d+-(\d\d)(\d\d)', date_string).groups()
     year = year1 if int(month) > 8 else int(year1) + 1
     return datetime.strptime(f"{year}-{month}-{day}", '%Y-%m-%d')
 
-con = sqlite3.connect(r"C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting\Data\odds.sqlite")
-datasets = ["odds_2023-24","odds_2022-23", "odds_2021-22", "odds_2020-21", "odds_2019-20", "odds_2018-19", "odds_2017-18", "odds_2016-17", "odds_2015-16", "odds_2014-15", "odds_2013-14", "odds_2012-13", "odds_2011-12", "odds_2010-11", "odds_2009-10", "odds_2008-09", "odds_2007-08"]
+
+con = sqlite3.connect(fr"{parent_dir}\NBA-Machine-Learning-Sports-Betting\Data\odds.sqlite")
+
 for dataset in tqdm(datasets):
     data = pd.read_sql_query(f"select * from \"{dataset}\"", con, index_col="index")
     teams_last_played = {}
@@ -20,22 +27,24 @@ for dataset in tqdm(datasets):
             continue
         if row['Home'] not in teams_last_played:
             teams_last_played[row['Home']] = get_date(row['Date'])
-            home_games_rested = 10 # start of season, big number
+            home_games_rested = 10  # start of season, big number
         else:
             current_date = get_date(row['Date'])
-            home_games_rested = (current_date - teams_last_played[row['Home']]).days if 0 < (current_date - teams_last_played[row['Home']]).days < 9 else 9
+            home_games_rested = (current_date - teams_last_played[row['Home']]).days if 0 < (
+                        current_date - teams_last_played[row['Home']]).days < 9 else 9
             teams_last_played[row['Home']] = current_date
         if row['Away'] not in teams_last_played:
             teams_last_played[row['Away']] = get_date(row['Date'])
-            away_games_rested = 10 # start of season, big number
+            away_games_rested = 10  # start of season, big number
         else:
             current_date = get_date(row['Date'])
-            away_games_rested = (current_date - teams_last_played[row['Away']]).days if 0 < (current_date - teams_last_played[row['Away']]).days < 9 else 9
+            away_games_rested = (current_date - teams_last_played[row['Away']]).days if 0 < (
+                        current_date - teams_last_played[row['Away']]).days < 9 else 9
             teams_last_played[row['Away']] = current_date
-        
+
         # update date
-        data.at[index,'Days_Rest_Home'] = home_games_rested
-        data.at[index,'Days_Rest_Away'] = away_games_rested
+        data.at[index, 'Days_Rest_Home'] = home_games_rested
+        data.at[index, 'Days_Rest_Away'] = away_games_rested
 
         # print(f"{row['Away']} @ {row['Home']} games rested: {away_games_rested} @ {home_games_rested}")
 

@@ -1,25 +1,23 @@
 import copy
-import os
 
 import numpy as np
-import pandas as pd
 import tensorflow as tf
 from colorama import Fore, Style, init, deinit
 from tensorflow.keras.models import load_model
-from src.Utils import Expected_Value
+from src.Utils import Expected_Value, Variables
 
 init()
 t1 = ""
 t2 = ""
-with open(rf'C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting\models.txt') as fp:
+with open(rf'{Variables.parent_dir}\NBA-Machine-Learning-Sports-Betting\models.txt') as fp:
     for i, line in enumerate(fp):
         print(line)
         if i == 0:
             t1 = line.strip()
         if i == 2:
             t2 = line.strip()
-model = load_model(rf"C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting\Models\Trained-Model-ML-{t1}")
-ou_model = load_model(rf"C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting\Models\Trained-Model-OU-{t2}")
+model = load_model(rf"{Variables.parent_dir}\NBA-Machine-Learning-Sports-Betting\Models\Trained-Model-ML-{t1}")
+ou_model = load_model(rf"{Variables.parent_dir}\NBA-Machine-Learning-Sports-Betting\Models\Trained-Model-OU-{t2}")
 
 
 def nn_runner(data, todays_games_uo, frame_ml, games, home_team_odds, away_team_odds):

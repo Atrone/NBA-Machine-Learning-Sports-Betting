@@ -1,16 +1,17 @@
 import os
 import sqlite3
+import sys
+
 import pandas as pd
 import xgboost as xgb
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from tqdm import tqdm
 import numpy as np
+sys.path.insert(1, os.path.join(sys.path[0], '..'))
+from Utils.Variables import dataset, parent_dir
+parent_dir = '\\'.join(str(parent_dir).split('\\')[:-2])
 
-current_dir = os.getcwd()  # Get current directory
-parent_dir = os.path.dirname(current_dir)  # Get parent directory
-
-dataset = "dataset_2012-24"
 con = sqlite3.connect(fr"{parent_dir}\NBA-Machine-Learning-Sports-Betting\Data\dataset.sqlite")
 data = pd.read_sql_query(f"select * from \"{dataset}\"", con, index_col="index")
 con.close()
@@ -52,4 +53,4 @@ for x in tqdm(range(100)):
     # only save results if they are the best so far
     if acc == max(acc_results):
         model.save_model(rf'{parent_dir}'+r'\NBA-Machine-Learning-Sports-Betting\Models\XGBoost_{}%_UO-8.json'.format(acc))
-        name = rf'{parent_dir}'+'\NBA-Machine-Learning-Sports-Betting\Models\XGBoost_{}%_UO-8.json'.format(acc)
+        name = rf'{parent_dir}'+r'\NBA-Machine-Learning-Sports-Betting\Models\XGBoost_{}%_UO-8.json'.format(acc)

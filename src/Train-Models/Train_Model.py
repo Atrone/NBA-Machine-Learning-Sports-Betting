@@ -1,22 +1,24 @@
 import os
 import sqlite3
+import sys
 import time
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
 import tensorflow as tf
 from tensorflow.keras.callbacks import TensorBoard, EarlyStopping, ModelCheckpoint
-
+sys.path.insert(1, os.path.join(sys.path[0], '..'))
+from Utils.Variables import dataset, parent_dir
+parent_dir = '\\'.join(str(parent_dir).split('\\')[:-2])
 current_time = str(time.time())
 
-current_dir = os.getcwd()  # Get current directory
-parent_dir = os.path.dirname(current_dir)  # Get parent directory
 
 
 tensorboard = TensorBoard(log_dir=rf'{parent_dir}'+r'\NBA-Machine-Learning-Sports-Betting\Logs\{}'.format(current_time))
 earlyStopping = EarlyStopping(monitor='val_loss', patience=10, verbose=0, mode='min')
 mcp_save = ModelCheckpoint(rf'{parent_dir}\NBA-Machine-Learning-Sports-Betting\Models\Trained-Model-ML-' + current_time, save_best_only=True, monitor='val_loss', mode='min')
 
-dataset = "dataset_2012-24"
 con = sqlite3.connect(rf"{parent_dir}\NBA-Machine-Learning-Sports-Betting\Data\dataset.sqlite")
 data = pd.read_sql_query(f"select * from \"{dataset}\"", con, index_col="index")
 con.close()

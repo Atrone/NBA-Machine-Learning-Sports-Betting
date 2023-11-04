@@ -3,14 +3,14 @@ import sqlite3
 import numpy as np
 import pandas as pd
 import sys
-from datetime import datetime
+from datetime import datetime, date
 from tqdm import tqdm
 sys.path.insert(1, os.path.join(sys.path[0], '..'))
 from Utils.Dictionaries import team_index_07, team_index_08, team_index_12, team_index_13, team_index_14, team_index_current
-
+from Utils.Variables import season_array, parent_dir, dataset
 # season_array = ["2007-08", "2008-09", "2009-10", "2010-11", "2011-12", "2012-13", "2013-14", "2014-15", "2015-16",
 #                 "2016-17", "2017-18", "2018-19", "2019-20", "2020-21", "2021-22", "2022-23"]
-season_array = ["2012-13", "2013-14", "2014-15", "2015-16", "2016-17", "2017-18", "2018-19", "2019-20", "2020-21", "2021-22", "2022-23", "2023-24"]
+parent_dir = '\\'.join(str(parent_dir).split('\\')[:-2])
 
 df = pd.DataFrame
 scores = []
@@ -20,8 +20,9 @@ OU_Cover = []
 games = []
 days_rest_away = []
 days_rest_home = []
-teams_con = sqlite3.connect(r"C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting\Data\teams.sqlite")
-odds_con = sqlite3.connect(r"C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting\Data\odds.sqlite")
+
+teams_con = sqlite3.connect(fr"{parent_dir}\NBA-Machine-Learning-Sports-Betting\Data\teams.sqlite")
+odds_con = sqlite3.connect(fr"{parent_dir}\NBA-Machine-Learning-Sports-Betting\Data\odds.sqlite")
 
 for season in tqdm(season_array):
     odds_df = pd.read_sql_query(f"select * from \"odds_{season}\"", odds_con, index_col="index")
@@ -123,5 +124,5 @@ current_dir = os.getcwd()  # Get current directory
 parent_dir = os.path.dirname(current_dir)  # Get parent directory
 
 con = sqlite3.connect(rf"{parent_dir}\NBA-Machine-Learning-Sports-Betting\Data\dataset.sqlite")
-frame.to_sql("dataset_2012-24", con, if_exists="replace")
+frame.to_sql(dataset, con, if_exists="replace")
 con.close()

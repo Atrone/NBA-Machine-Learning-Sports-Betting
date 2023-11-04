@@ -1,6 +1,6 @@
 import argparse
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 import time
 from colorama import Fore, Style
 import pandas as pd
@@ -10,15 +10,22 @@ from src.Utils.Dictionaries import team_index_current
 from src.Utils.tools import create_todays_games_from_odds, get_json_data, to_data_frame, get_todays_games_json, create_todays_games
 from src.DataProviders.SbrOddsProvider import SbrOddsProvider
 
+if date.today().month in range(8,13):
+    season = f"{date.today().year}-{str((date.today().year)+1)[:-2]}"
+    todays_games_url = f'https://data.nba.com/data/10s/v2015/json/mobile_teams/nba/{date.today().year}/scores/00_todays_scores.json'
 
-todays_games_url = 'https://data.nba.com/data/10s/v2015/json/mobile_teams/nba/2023/scores/00_todays_scores.json'
+else:
+    season = f"{date.today().year-1}-{str((date.today().year))[:-2]}"
+    todays_games_url = f'https://data.nba.com/data/10s/v2015/json/mobile_teams/nba/{date.today().year-1}/scores/00_todays_scores.json'
+
+
 data_url = 'https://stats.nba.com/stats/leaguedashteamstats?' \
            'Conference=&DateFrom=&DateTo=&Division=&GameScope=&' \
            'GameSegment=&LastNGames=0&LeagueID=00&Location=&' \
            'MeasureType=Base&Month=0&OpponentTeamID=0&Outcome=&' \
            'PORound=0&PaceAdjust=N&PerMode=PerGame&Period=0&' \
            'PlayerExperience=&PlayerPosition=&PlusMinus=N&Rank=N&' \
-           'Season=2023-24&SeasonSegment=&SeasonType=Regular+Season&ShotClockRange=&' \
+           f'Season={season}&SeasonSegment=&SeasonType=Regular+Season&ShotClockRange=&' \
            'StarterBench=&TeamID=0&TwoWay=0&VsConference=&VsDivision='
 current_dir = os.getcwd()  # Get current directory
 parent_dir = os.path.dirname(current_dir)  # Get parent directory
@@ -97,7 +104,7 @@ def main():
         if len(games) == 0:
             print("No games found.")
             return
-        if((games[0][0]+':'+games[0][1]) not in list(odds.keys())):
+        if (games[0][0] + ':' + games[0][1]) not in list(odds.keys()):
             print(games[0][0]+':'+games[0][1])
             print(Fore.RED, "--------------Games list not up to date for todays games!!! Scraping disabled until list is updated.--------------")
             print(Style.RESET_ALL)
@@ -107,9 +114,6 @@ def main():
             for g in odds.keys():
                 home_team, away_team = g.split(":")
                 print(f"{away_team} ({odds[g][away_team]['money_line_odds']}) @ {home_team} ({odds[g][home_team]['money_line_odds']})")
-    else:
-        data = get_todays_games_json(todays_games_url)
-        games = create_todays_games(data)
     data = get_json_data(data_url)
     df = to_data_frame(data)
     data, todays_games_uo, frame_ml, home_team_odds, away_team_odds = createTodaysGames(games, df, odds)

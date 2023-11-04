@@ -1,8 +1,11 @@
 @echo off
-del C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting\models.txt
+del models.txt
 
-python C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting\src\Process-Data\setup.py
+cd src\Process-Data
+python setup.py
 
-python C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting\src\Train-Models\setup.py
+cd ..\Train-Models
+python setup.py
 
-python C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting\main.py > C:\Users\antho\PycharmProjects\nba_fantasy_trone\NBA-Machine-Learning-Sports-Betting\output.txt
+cd ..\..
+python main.py > output.txt
