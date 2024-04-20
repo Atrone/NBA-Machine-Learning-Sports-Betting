@@ -19,7 +19,7 @@ begin_year_pointer = year[0]
 end_year_pointer = year[0]
 count = 0
 
-sportsbook='draftkings'
+sportsbook='bet365'
 df_data = []
 
 
@@ -32,24 +32,23 @@ for season1 in tqdm(season):
             count += 1
             end_year_pointer = year[count]
         for day1 in tqdm(days):
-            if month1 == 10 and day1 < 19: # pre season start
+            if month1 == 10 and day1 < 24:
                 continue
-            if month1 in [4,6,9,11] and day1 > 30:
+            if month1 in [4, 6, 9, 11] and day1 > 30:
                 continue
             if month1 == 2 and day1 > 28:
                 continue
-            if end_year_pointer == datetime.now().year:
-                if month1 == datetime.now().month and day1 >= datetime.now().day:
-                    continue
-                if month1 > datetime.now().month:
-                    continue
+            # skip future games
+            if datetime.now() < datetime(year=int(end_year_pointer), month=month1, day=day1):
+                continue
+            print(f"{end_year_pointer}-{month1:02}-{day1:02}")
             sb = Scoreboard(date=f"{end_year_pointer}-{month1:02}-{day1:02}")
             if not hasattr(sb, "games"):
                 continue
             for game in sb.games:
                 if game['home_team'] not in teams_last_played:
                     teams_last_played[game['home_team']] = get_date(f"{season1}-{month1:02}{day1:02}")
-                    home_games_rested = timedelta(days=7) # start of season, big number
+                    home_games_rested = timedelta(days=7)  # start of season, big number
                 else:
                     current_date = get_date(f"{season1}-{month1:02}{day1:02}")
                     home_games_rested = current_date - teams_last_played[game['home_team']]
@@ -58,12 +57,12 @@ for season1 in tqdm(season):
 
                 if game['away_team'] not in teams_last_played:
                     teams_last_played[game['away_team']] = get_date(f"{season1}-{month1:02}{day1:02}")
-                    away_games_rested = timedelta(days=7) # start of season, big number
+                    away_games_rested = timedelta(days=7)  # start of season, big number
                 else:
                     current_date = get_date(f"{season1}-{month1:02}{day1:02}")
                     away_games_rested = current_date - teams_last_played[game['away_team']]
                     teams_last_played[game['away_team']] = current_date
-                
+
                 try:
                     df_data.append({
                         'Unnamed: 0': 0,
@@ -84,6 +83,6 @@ for season1 in tqdm(season):
             time.sleep(random.randint(1, 3))
     begin_year_pointer = year[count]
 
-    df = pd.DataFrame(df_data,)
+    df = pd.DataFrame(df_data, )
     df.to_sql(f"odds_{season1}", con, if_exists="replace")
 con.close()

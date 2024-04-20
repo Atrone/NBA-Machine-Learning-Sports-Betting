@@ -21,10 +21,15 @@ else:
     season = [f"{date.today().year-1}-{str(date.today().year)[-2:]}"]
 
 season_array = []
-
+print(year)
+print(season)
 for i in range(2012,date.today().year+1):
     season_array.append(f"{i}-{str(i + 1)[-2:]}")
-
+if date.today().month in range(8,12):
+    pass
+else:
+    season_array = season_array[:-1]
+print(season_array)
 
 current_dir = os.getcwd()  # Get current directory
 parent_dir = os.path.dirname(current_dir)  # Get parent directory

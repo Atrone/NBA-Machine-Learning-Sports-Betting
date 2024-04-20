@@ -12,11 +12,11 @@ from src.Utils.tools import create_todays_games_from_odds, get_json_data, to_dat
 from src.DataProviders.SbrOddsProvider import SbrOddsProvider
 
 if date.today().month in range(8, 13):
-    season = f"{date.today().year}-{str((date.today().year) + 1)[:-2]}"
+    season = f"{date.today().year}-{str((date.today().year) + 1)[-2:]}"
     todays_games_url = f'https://data.nba.com/data/10s/v2015/json/mobile_teams/nba/{date.today().year}/scores/00_todays_scores.json'
 
 else:
-    season = f"{date.today().year - 1}-{str((date.today().year))[:-2]}"
+    season = f"{date.today().year - 1}-{str((date.today().year))[-2:]}"
     todays_games_url = f'https://data.nba.com/data/10s/v2015/json/mobile_teams/nba/{date.today().year - 1}/scores/00_todays_scores.json'
 
 csv_reference = 'nba-2023-UTC.csv'  # UPDATE ME
@@ -103,8 +103,8 @@ def createTodaysGames(games, df, odds):
 
 def main():
     odds = None
-    if "draftkings":
-        odds = SbrOddsProvider(sportsbook="draftkings").get_odds()
+    if "bet365":
+        odds = SbrOddsProvider(sportsbook="bet365").get_odds()
         games = create_todays_games_from_odds(odds)
         if len(games) == 0:
             print("No games found.")
@@ -116,7 +116,7 @@ def main():
             print(Style.RESET_ALL)
             odds = None
         else:
-            print(f"------------------draftkings odds data------------------")
+            print(f"------------------bet365 odds data------------------")
             for g in odds.keys():
                 home_team, away_team = g.split(":")
                 print(
