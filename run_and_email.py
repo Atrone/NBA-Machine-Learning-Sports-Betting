@@ -10,18 +10,21 @@ from email.mime.text import MIMEText
 import subprocess
 import os
 
+current_dir = os.getcwd()  # Get current directory
+parent_dir = os.path.dirname(current_dir)  # Get parent directory
+# Define the paths
+bat_path = rf"{parent_dir}\NBA-Machine-Learning-Sports-Betting\job.bat"
+output_path = rf"{parent_dir}\NBA-Machine-Learning-Sports-Betting\output.txt"
+
 def main():
-    current_dir = os.getcwd()  # Get current directory
-    parent_dir = os.path.dirname(current_dir)  # Get parent directory
+    run()
+    email()
 
-    # Define the paths
-    bat_path = rf"{parent_dir}\NBA-Machine-Learning-Sports-Betting\job.bat"
-    output_path = rf"{parent_dir}\NBA-Machine-Learning-Sports-Betting\output.txt"
-
-    # Run your batch file
-    result = subprocess.run(
+def run():
+    subprocess.run(
         ["cmd.exe", "/c", bat_path])
 
+def email():
     # Regular expression to match ANSI escape codes
     ansi_escape = re.compile(r'(?:\x1B[@-_]|[\x80-\x9F])[0-?]*[ -/]*[@-~]')
 
@@ -44,7 +47,7 @@ def main():
     smtp_server = "smtp.gmail.com"
     smtp_port = 587  # or 465, depending on your server
     smtp_user = "blockbits30@gmail.com"
-    smtp_password = ''
+    smtp_password = os.environ.get("emailpwd","")
 
     # Compose email
     msg = MIMEMultipart()
