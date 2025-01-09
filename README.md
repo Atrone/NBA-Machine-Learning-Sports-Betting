@@ -1,6 +1,6 @@
 # Slam-Dunk-Streamline 🏀
 
-## NO LONGER USED DUE TO SUSPECTED ALPHA DECAY AND LIFE CHANGES THAT MAKE ACTIVE MAINTAINANCE DIFFICULT 
+## Best efficacy seen during PLAYOFFS 
 
 A fork of a popular NBA machine learning project that adds depth to each module.
 
