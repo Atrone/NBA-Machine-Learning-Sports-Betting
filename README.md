@@ -2,7 +2,7 @@
 
 ## Best efficacy seen during PLAYOFFS 
 
-A fork of a popular NBA machine learning project that adds depth to each module.
+A fork of a popular NBA machine learning project that adds depth to each module, and adds the intelligence necessary to actually make money irl
 
 Automagically knows today's season and adapts accordingly... almost.
 
