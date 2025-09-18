@@ -37,6 +37,7 @@ def _load_dataset(dataset_path: str, table: str) -> pd.DataFrame:
     Returns:
         DataFrame of dataset.
     """
+    # open sqlite connection to the dataset file
     con = sqlite3.connect(dataset_path)
     try:
         df = pd.read_sql_query(f"select * from \"{table}\"", con, index_col="index")
@@ -57,8 +58,16 @@ def _load_odds_for_season(odds_path: str, season: str) -> pd.DataFrame:
     """
     con = sqlite3.connect(odds_path)
     try:
-        table = f"odds_{season}_new"
-        df = pd.read_sql_query(f"select * from \"{table}\"", con, index_col="index")
+        # attempt to read the preferred *_new table first
+        preferred = f"odds_{season}_new"
+        # inline comment: check sqlite master for table existence
+        exists = pd.read_sql_query("SELECT name FROM sqlite_master WHERE type='table'", con)
+        names = set(exists['name'].tolist())
+        table_name = preferred if preferred in names else f"odds_{season}"
+        if table_name not in names:
+            # inline comment: no odds table available for this season
+            return pd.DataFrame()
+        df = pd.read_sql_query(f"select * from \"{table_name}\"", con, index_col="index")
     finally:
         con.close()
     return df
@@ -73,6 +82,7 @@ def _prepare_features_targets(df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.Series
     Returns:
         (X, y, meta) where X are features, y is Home-Team-Win label, meta includes TEAM_NAME, Date, TEAM_NAME.1, Date.1
     """
+    # select columns to exclude that are labels or metadata
     meta_cols = ['TEAM_NAME', 'Date', 'TEAM_NAME.1', 'Date.1', 'OU']
     y = df['Home-Team-Win']
     drop_cols = ['Score', 'Home-Team-Win', 'OU-Cover'] + meta_cols
@@ -90,6 +100,7 @@ def _build_odds_lookup(odds_df: pd.DataFrame) -> Dict[str, Dict[str, int]]:
     Returns:
         {date_str: {team_name: moneyline_int, team_name: moneyline_int}}
     """
+    # create mapping: date -> {team -> moneyline}
     lookup: Dict[str, Dict[str, int]] = {}
     for row in odds_df.itertuples(index=False):
         # Expected columns order from Get_Odds_Data writer
@@ -139,7 +150,8 @@ def run_backtest(
     dataset_table: str = 'dataset_2012-24_new',
     start_year: int = 2018,
     end_year: int = 2024,
-    output_json_path: str = os.path.abspath(os.path.join(os.getcwd(), 'Data', 'backtest_ev_2018_2024.json'))
+    output_json_path: str = os.path.abspath(os.path.join(os.getcwd(), 'Data', 'backtest_ev_2018_2024.json')),
+    max_dates: int | None = None
 ) -> str:
     """Run walk-forward backtest 2018-2024.
 
@@ -177,9 +189,11 @@ def run_backtest(
         season_to_odds_lookup[season] = _build_odds_lookup(odds_df)
 
     # model we will re-fit as we advance (logistic regression)
-    model = LogisticRegression(max_iter=1000)
+    # line comment: keep iterations modest for quick test runs
+    model = LogisticRegression(max_iter=200)
 
     # walk through dates; for each date, train on strictly earlier games, hold out games that occur on this date
+    processed_dates = 0  # line comment: track how many dates we've evaluated
     for current_date in unique_dates:
         # filter date range restriction
         year = int(current_date.split('-')[0])
@@ -237,6 +251,11 @@ def run_backtest(
                            ev_home, ev_away, outcome_home, outcome_away,
                            ml_home if ml_home is not None else 0,
                            ml_away if ml_away is not None else 0)
+
+        # line comment: respect quick-run limit if provided
+        processed_dates += 1
+        if max_dates is not None and processed_dates >= max_dates:
+            break
 
     # convert mapping to desired list-of-objects format: [{date: {team: {...}}}, ...]
     results: List[Dict] = [{date: teams} for date, teams in sorted(results_by_date.items())]
