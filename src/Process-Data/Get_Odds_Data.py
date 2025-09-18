@@ -13,12 +13,12 @@ from sbrscrape import Scoreboard
 
 sys.path.insert(1, os.path.join(sys.path[0], '../..'))
 
-sportsbook = 'fanduel'
+sportsbook = 'bet365'
 df_data = []
 
-config = toml.load("C:/Users/antho/cursorProjects/NBA-Machine-Learning-Sports-Betting/config.toml")
+config = toml.load("C:/Users/atrone/cursorProjects/NBA-Betting/NBA-Machine-Learning-Sports-Betting/config.toml")
 
-con = sqlite3.connect("C:/Users/antho/cursorProjects/NBA-Machine-Learning-Sports-Betting/Data/OddsData.sqlite")
+con = sqlite3.connect("C:/Users/atrone/cursorProjects/NBA-Betting/NBA-Machine-Learning-Sports-Betting/Data/OddsData.sqlite")
 
 for key, value in config['get-odds-data'].items():
     date_pointer = datetime.strptime(value['start_date'], "%Y-%m-%d").date()

@@ -9,7 +9,7 @@ from sklearn.metrics import classification_report, accuracy_score
 from sklearn.model_selection import train_test_split
 
 dataset = "dataset_2012-23"
-con = sqlite3.connect("C:/Users/antho/cursorProjects/NBA-Machine-Learning-Sports-Betting/Data/dataset.sqlite")
+con = sqlite3.connect("C:/Users/atrone/cursorProjects/NBA-Betting/NBA-Machine-Learning-Sports-Betting/Data/dataset.sqlite")
 data = pd.read_sql_query(f"select * from \"{dataset}\"", con, index_col="index")
 con.close()
 
@@ -34,7 +34,7 @@ accuracy = accuracy_score(y_test, y_pred)
 # Generate a classification report
 report = classification_report(y_test, y_pred)
 name = f"Logistic_Regression_UO_{time.time()}"
-joblib.dump(model, f"C:/Users/antho/cursorProjects/NBA-Machine-Learning-Sports-Betting/Models/{name}")
+joblib.dump(model, f"C:/Users/atrone/cursorProjects/NBA-Betting/NBA-Machine-Learning-Sports-Betting/Models/{name}")
 
 # Print the results
 print(f"Accuracy: {accuracy}")

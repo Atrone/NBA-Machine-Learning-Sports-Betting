@@ -20,7 +20,7 @@ xgb_uo = None
 def _load_models():
     global xgb_ml, xgb_uo
     if xgb_ml is None:
-        ml_model_files = glob.glob("C:/Users/antho/cursorProjects/NBA-Machine-Learning-Sports-Betting/Models/XGBoost_*_ML-*.json")
+        ml_model_files = glob.glob("C:/Users/atrone/cursorProjects/NBA-Betting/NBA-Machine-Learning-Sports-Betting/Models/XGBoost_*_ML-*.json")
         if not ml_model_files:
             raise FileNotFoundError("No XGBoost ML model files found in Models directory")
         latest_ml = max(ml_model_files, key=os.path.getctime)
@@ -28,7 +28,7 @@ def _load_models():
         xgb_ml = xgb.Booster()
         xgb_ml.load_model(latest_ml)
     if xgb_uo is None:
-        uo_model_files = glob.glob("C:/Users/antho/cursorProjects/NBA-Machine-Learning-Sports-Betting/Models/XGBoost_*_UO-*.json")
+        uo_model_files = glob.glob("C:/Users/atrone/cursorProjects/NBA-Betting/NBA-Machine-Learning-Sports-Betting/Models/XGBoost_*_UO-*.json")
         if not uo_model_files:
             raise FileNotFoundError("No XGBoost OU model files found in Models directory")
         latest_uo = max(uo_model_files, key=os.path.getctime)

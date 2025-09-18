@@ -14,7 +14,7 @@ def _load_model():
     global _lr_model
     if _lr_model is None:
         # automatically find the most recent saved Logistic Regression model
-        model_files = glob.glob("C:/Users/antho/cursorProjects/NBA-Machine-Learning-Sports-Betting/Models/Logistic_Regression_ML_*")
+        model_files = glob.glob("C:/Users/atrone/cursorProjects/NBA-Betting/NBA-Machine-Learning-Sports-Betting/Models/Logistic_Regression_ML_*")
         if not model_files:
             raise FileNotFoundError("No Logistic Regression model files found in Models directory")
         latest = max(model_files, key=os.path.getctime)
